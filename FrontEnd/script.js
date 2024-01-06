@@ -52,7 +52,7 @@ fetch('http://localhost:5678/api/works')
             });
         });
 
-        // intégration des boutons pour chaque catégorie
+        // intégration des autres boutons pour chaque catégorie
         categories.forEach(category => {
             const button = document.createElement('button');
             button.setAttribute('type', 'button');
@@ -65,9 +65,34 @@ fetch('http://localhost:5678/api/works')
                 figures.forEach(figure => {
                     figure.style.display = (figure.getAttribute('id') === category || category === "tous") ? "block" : "none";
                 });
-                
             });
         });
+
+        
+        // Passage fonctionnement connexion
+        const logoutLien = document.querySelector("#logoutId");
+            logoutLien.addEventListener("click", function () {
+            localStorage.clear();
+        });
+
+            // concernant la connexion
+    // Récupère info de connexion depuis le localStorage
+    const isConnected = localStorage.getItem('connection');
+    console.log(isConnected);
+    //const gallery = document.querySelector('.gallery');
+    if (isConnected == 'true') {
+      document.querySelector("#loginId").style.display = "none";
+      document.querySelector("#logoutId").style.display = "block";
+        document.querySelector("#boutonModal").style.display = "block";
+        document.querySelector("#modifierDiv").style.display = "block";
+        console.log(gallery);
+        
+
+    } else {
+      document.querySelector("#loginId").style.display = "block";
+      document.querySelector("#logoutId").style.display = "none";
+    };
+
     })
     .catch(console.error);
 
