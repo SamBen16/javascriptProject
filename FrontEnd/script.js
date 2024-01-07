@@ -69,31 +69,95 @@ fetch('http://localhost:5678/api/works')
         });
 
         
-        // Passage fonctionnement connexion
+        // Passage fonctionnement connexion/deconnexion
         const logoutLien = document.querySelector("#logoutId");
             logoutLien.addEventListener("click", function () {
             localStorage.clear();
         });
 
-            // concernant la connexion
-    // Récupère info de connexion depuis le localStorage
-    const isConnected = localStorage.getItem('connection');
-    console.log(isConnected);
-    //const gallery = document.querySelector('.gallery');
-    if (isConnected == 'true') {
-      document.querySelector("#loginId").style.display = "none";
-      document.querySelector("#logoutId").style.display = "block";
-        document.querySelector("#boutonModal").style.display = "block";
-        document.querySelector("#modifierDiv").style.display = "block";
-        console.log(gallery);
+        // Récupère info de connexion depuis le localStorage
+        const isConnected = localStorage.getItem('connection');
+            console.log(isConnected);
+            const gallery = document.querySelector('.gallery');
+        if (isConnected == 'true') {
+            document.querySelector("#loginId").style.display = "none";
+            document.querySelector("#logoutId").style.display = "block";
+           document.querySelector("#logoOuvrirModal1").style.display = "block";
+           document.querySelector("#ouvrirModal1").style.display = "block";
+           console.log(gallery);
         
+        } else {
+            document.querySelector("#loginId").style.display = "block";
+            document.querySelector("#logoutId").style.display = "none";
+        };
 
-    } else {
-      document.querySelector("#loginId").style.display = "block";
-      document.querySelector("#logoutId").style.display = "none";
-    };
+        // affichage 1ère modal
+        const ouvrirModal1 = document.querySelector('#ouvrirModal1');
+        const modal1 = document.querySelector('#modal1');
+        const fermerModal1 = document.getElementById("fermerModal1");
 
-    })
+        ouvrirModal1.addEventListener('click', function() {
+            const galleryModal = document.querySelector('.galleryModal');
+            console.log(galleryModal);
+
+            data.forEach(element => {
+                const figureModal = document.createElement('figure');
+                const imgModal = document.createElement('img');
+                const deleteImg = document.createElement('i');
+
+                imgModal.src = element.imageUrl;
+                imgModal.alt = element.title;
+
+                figureModal.classList.add('gallery-item');
+                figureModal.style.position = 'relative';
+                deleteImg.classList.add('fas', 'fa-trash-alt');
+                deleteImg.style.position = 'absolute';
+                deleteImg.style.top = '6px';
+                deleteImg.style.right = '6px';
+                deleteImg.style.zIndex = '1';
+                deleteImg.style.opacity = '1';
+                deleteImg.style.border = '2px solid black';
+                deleteImg.style.backgroundColor = "black";
+                deleteImg.style.color = "white";
+
+                figureModal.appendChild(imgModal);
+                figureModal.appendChild(deleteImg);
+                galleryModal.appendChild(figureModal);
+
+                deleteImg.addEventListener('click', function() {
+                    const id = element.id;
+                    const token = localStorage.getItem("token");
+                    console.log(token);
+                    // Vérifier la présence du token
+                    if (token === localStorage.getItem('token')) {
+                        console.log(id);
+                        fetch(`http://localhost:5678/api/works/${id}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                            },
+                        })
+                        .then(response => response.json())
+                        .then(response => {
+                            console.log("suppression ok");
+                        })
+                        .catch(error => console.error('Erreur :', error));
+                    }
+                });
+                
+        
+                modal1.style.display = "block";
+            });
+        });
+
+              // fermeture modal1 avec la croix
+        fermerModal1.addEventListener("click", function() {
+                console.log("fermer");
+                modal1.style.display = "none";
+        });
+       
+
+        })
     .catch(console.error);
 
 // Fonction pour récupérer la catégorie d'un élément

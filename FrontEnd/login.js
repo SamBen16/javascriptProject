@@ -1,6 +1,7 @@
 function seConnecter() {
-    const seConnecter = document.querySelector(".formulaire");
-    seConnecter.addEventListener('submit', function(event) {
+    const seConnecterForm = document.querySelector(".formulaire");
+    if (seConnecterForm) {
+        seConnecterForm.addEventListener('submit', function(event) {
         event.preventDefault();
         
         const user =  {
@@ -9,7 +10,7 @@ function seConnecter() {
         };
         console.log(user);
 
-
+    
         const chargeUtile = JSON.stringify(user);
         fetch('http://localhost:5678/api/users/login', {
             method: "POST",
@@ -19,6 +20,7 @@ function seConnecter() {
         .then(response => response.json())
         .then(data => {
         console.log(data.message)
+       
 //        if (email == true && password == true) {
     if (typeof data.message === "undefined") {
 
@@ -35,7 +37,9 @@ function seConnecter() {
             console.log(data.message)
            alert("L'e-mail et/ou le mot de passe sont incorrects.");
        }
+        
     })
   });    
-}
+}}
+
 seConnecter();
