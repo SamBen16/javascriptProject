@@ -1,3 +1,5 @@
+let figure;
+let figureModal;
 fetch('http://localhost:5678/api/works')
     .then(response => response.json())
     .then(data => {
@@ -8,7 +10,7 @@ fetch('http://localhost:5678/api/works')
             const gallery = document.querySelector('.gallery');
 
             // Création des éléments 
-            const figure = document.createElement('figure');
+            figure = document.createElement('figure');
             const img = document.createElement('img');
             const figcaption = document.createElement('figcaption');
             
@@ -124,28 +126,29 @@ fetch('http://localhost:5678/api/works')
                 figureModal.appendChild(deleteImg);
                 galleryModal.appendChild(figureModal);
 
+                console.log('figure:', figure);
+                console.log(figureModal);
+                
                 deleteImg.addEventListener('click', function() {
                     const id = element.id;
                     const token = localStorage.getItem("token");
-                    console.log(token);
+                     console.log(token);
                     // Vérifier la présence du token
-                    if (token === localStorage.getItem('token')) {
+                    if (token) {
                         console.log(id);
                         fetch(`http://localhost:5678/api/works/${id}`, {
                             method: 'DELETE',
                             headers: {
+                                'Accept': '*/*',
                                 'Authorization': `Bearer ${token}`,
                             },
                         })
-                        .then(response => response.json())
                         .then(response => {
-                            console.log("suppression ok");
+                            figure.style.display = 'none';
+                            figureModal.style.display = 'none';
                         })
-                        .catch(error => console.error('Erreur :', error));
                     }
                 });
-                
-        
                 modal1.style.display = "block";
             });
         });
@@ -155,9 +158,7 @@ fetch('http://localhost:5678/api/works')
                 console.log("fermer");
                 modal1.style.display = "none";
         });
-       
-
-        })
+    })
     .catch(console.error);
 
 // Fonction pour récupérer la catégorie d'un élément

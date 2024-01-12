@@ -19,19 +19,20 @@ function seConnecter() {
         })
         .then(response => response.json())
         .then(data => {
-        console.log(data.message)
+        console.log(data)
        
 //        if (email == true && password == true) {
     if (typeof data.message === "undefined") {
 
             // enregistrement dans localStorage
             localStorage.setItem('connection', 'true');
-            localStorage.setItem("userId", 1);
-            localStorage.setItem("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY1MTg3NDkzOSwiZXhwIjoxNjUxOTYxMzM5fQ.JGN1p8YIfR-M-5eQ-Ypy6Ima5cKA4VbfL2xMr2MgHm4");
+            localStorage.setItem("userId", data.userId);
+            localStorage.setItem("token", data.token);
+            console.log(data.token);
             //mise en place parametre ds l'URL avec la méthode GET 
             const redirection = "index.html";
             // redirection
-            window.location.href= redirection;
+             window.location.href= redirection;
        } else {
             //Gérer le cas où l'authentification a échoué
             console.log(data.message)
